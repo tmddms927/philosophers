@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/06/30 03:38:10 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/06/30 05:34:48 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 # include <pthread.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include <sys/time.h>
+# include <unistd.h>
 
 # define NOT 1
 # define EAT 2
@@ -25,10 +27,12 @@
 
 typedef struct		s_thread
 {
-	int				my_die;
+	int				num;
+	suseconds_t		not;
 	int				my_eat;
-	int				my_sleep;
 	int				action;
+	bool			my_l;
+	bool			my_r;
 	bool			*l_chop;
 	bool			*r_chop;
 }					t_thread;
@@ -69,5 +73,7 @@ int					just_info_free();
 
 int					start_thread();
 void				*philo_action1(void *info);
+void				*change_action();
+void				get_chopstic(t_thread *mem);
 
 #endif

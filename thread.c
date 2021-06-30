@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:29:02 by seungoh           #+#    #+#             */
-/*   Updated: 2021/06/30 03:39:07 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/06/30 05:35:15 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,11 @@ int			start_thread()
 	i = 0;
 	while (i < g_info->number)
 	{
-		g_info->members[i].my_die = 0;
-		g_info->members[i].my_eat = i;
-		g_info->members[i].my_sleep = 0;
+		g_info->members[i].num = i + 1;
+		g_info->members[i].my_eat = 0;
 		g_info->members[i].action = NOT;
+		g_info->members[i].my_l = false;
+		g_info->members[i].my_r = true;
 		g_info->members[i].l_chop = &g_info->chopstic[i];
 		if (i == g_info->number - 1)
 			g_info->members[i].r_chop = &g_info->chopstic[0];
@@ -45,26 +46,98 @@ int			start_thread()
 ** thread action1
 */
 
-void		*philo_action1(void *member)
+void				*philo_action1(void *member)
 {
-	t_thread *temp = member;
-	printf("create thread : %d\n", temp->my_eat);
-	while (temp->action != DIE)
+	t_thread 		*mem;
+	struct timeval	temp;
+
+	mem = member;
+	gettimeofday(&temp, NULL);
+	printf("%ld %d has taken a fork\n", temp.tv_usec / 1000, mem->num);
+	mem->not = temp.tv_usec;
+	while (mem->action != DIE)
 	{
-		if (*temp->l_chop)
+		gettimeofday(&temp, NULL);
+		if (mem->action == NOT && (temp.tv_usec - mem->not) / 1000 > g_info->die)
+			return (change_action(mem, DIE));
+		get_chopstic(mem);
+		if (mem->action == EAT)
 		{
-			pthread_mutex_lock(&g_info->mutex);
-			*temp->l_chop = false;
-			printf("left, %d\n", temp->my_eat);
-			pthread_mutex_unlock(&g_info->mutex);
+			usleep(g_info->eat * 1000);
+			change_action(mem, SLEEP);
+			gettimeofday(&temp, NULL);
+			mem->not = temp.tv_usec;
 		}
-		if (*temp->r_chop)
+		if (mem->action == SLEEP)
 		{
-			pthread_mutex_lock(&g_info->mutex);
-			printf("right, %d\n", temp->my_eat);
-			*temp->r_chop = false;
-			pthread_mutex_unlock(&g_info->mutex);
+			if (g_info->sleep > g_info->die)
+				return (change_action(mem, DIE));
+			usleep(g_info->sleep * 1000);
+			change_action(mem, NOT);
+			gettimeofday(&temp, NULL);
+			mem->not = temp.tv_usec;
 		}
 	}
 	return (member);
+}
+
+/*
+** change action
+*/
+void		*change_action(t_thread *mem, int action)
+{
+	struct timeval	temp;
+
+	if (action == DIE)
+	{
+		gettimeofday(&temp, NULL);
+		printf("%ld %d is died\n", temp.tv_usec / 1000, mem->num);
+		mem->action = DIE;
+	}
+	if (action == EAT)
+	{
+		gettimeofday(&temp, NULL);
+		printf("%ld %d is eating\n", temp.tv_usec / 1000, mem->num);
+		mem->my_l = false;
+		mem->my_r = false;
+		mem->my_eat++;
+		pthread_mutex_lock(&g_info->mutex);
+		*mem->l_chop = true;
+		*mem->r_chop = true;
+		pthread_mutex_unlock(&g_info->mutex);
+		mem->action = EAT;
+	}
+	if (action == SLEEP)
+	{
+		mem->action = SLEEP;
+		gettimeofday(&temp, NULL);
+		printf("%ld %d is sleeping\n", temp.tv_usec / 1000, mem->num);
+	}
+	if (action == NOT)
+	{
+		mem->action = NOT;
+		gettimeofday(&temp, NULL);
+		printf("%ld %d is thinking\n", temp.tv_usec / 1000, mem->num);
+	}
+	return (0);
+}
+
+void		get_chopstic(t_thread *mem)
+{
+	if (*mem->l_chop)
+	{
+		mem->my_l = true;
+		pthread_mutex_lock(&g_info->mutex);
+		*mem->l_chop = false;
+		pthread_mutex_unlock(&g_info->mutex);
+	}
+	if (*mem->r_chop)
+	{
+		mem->my_r = true;
+		pthread_mutex_lock(&g_info->mutex);
+		*mem->r_chop = false;
+		pthread_mutex_unlock(&g_info->mutex);
+	}
+	if (mem->my_l && mem->my_r)
+		change_action(mem, EAT);
 }
