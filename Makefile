@@ -6,16 +6,17 @@
 #    By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 23:27:06 by seungoh           #+#    #+#              #
-#    Updated: 2021/06/28 06:20:26 by seungoh          ###   ########.fr        #
+#    Updated: 2021/06/30 02:56:03 by seungoh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 OUT			=		philo
 CC			= 		gcc
-CFLAGS		=		-Wall -Werror -Wextra
+CFLAGS		=		-Wall -Werror -Wextra -pthread -fsanitize=address -g
 SRCS		=		main.c\
 					utils.c\
-					parsing.c
+					parsing.c\
+					thread.c
 OBJS		=		${SRCS:.c=.o}
 
 all			:		${OUT}
