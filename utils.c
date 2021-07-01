@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:26:45 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/01 15:58:44 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/01 17:56:56 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int			exit_program(char *s)
 	return (0);
 }
 
-int			just_info_free()
+int			just_info_free(void)
 {
 	free(g_info);
 	return (0);

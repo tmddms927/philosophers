@@ -6,12 +6,12 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/01 15:57:58 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/01 20:06:51 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef HEADER_H
-#define HEADER_H
+# define HEADER_H
 
 # include <stdio.h>
 # include <pthread.h>
@@ -58,7 +58,9 @@ t_info				*g_info;
 ** parsing.c
 */
 
+int					start_parsing(int argc, char **argv);
 int					argument_processing(int argc, char **argv);
+int					set_g_info();
 void				init_chopstics();
 int					ft_atoi(const char *str);
 
@@ -74,8 +76,10 @@ int					just_info_free();
 */
 
 int					start_thread();
+int					thread_info_set(int i);
 void				*philo_action1(void *info);
-void				*change_action();
+void				*change_action1();
+void				*change_action2(t_thread *mem, int action);
 void				get_chopstic(t_thread *mem);
 
 #endif
