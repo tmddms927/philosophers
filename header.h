@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/06/30 05:34:48 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/01 15:57:58 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct		s_thread
 	bool			my_r;
 	bool			*l_chop;
 	bool			*r_chop;
+	pthread_mutex_t	*l_mu;
+	pthread_mutex_t	*r_mu;
 }					t_thread;
 
 typedef struct		s_info
@@ -46,7 +48,7 @@ typedef struct		s_info
 	int				must_eat;
 	bool			*chopstic;
 	pthread_t		*thread;
-	pthread_mutex_t	mutex;
+	pthread_mutex_t	*mutex;
 	t_thread		*members;
 }					t_info;
 

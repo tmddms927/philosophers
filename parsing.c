@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:02:05 by seungoh           #+#    #+#             */
-/*   Updated: 2021/06/30 04:21:36 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/01 17:43:35 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,16 @@ int				argument_processing(int argc, char **argv)
 	init_chopstics();
 	if (!(g_info->thread = (pthread_t *)malloc(sizeof(pthread_t) * g_info->number)))
 		return (just_info_free());
+	if (!(g_info->mutex = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t) * g_info->number)))
+		return (just_info_free());
 	if (!(g_info->members = (t_thread *)malloc(sizeof(t_thread) * g_info->number)))
 		return (just_info_free());
+
+	int	i;
+	i = 0;
+	while (i < g_info->number)
+		if (pthread_mutex_init(&g_info->mutex[i++], NULL))
+			return (just_info_free());
 	return (1);
 }
 
