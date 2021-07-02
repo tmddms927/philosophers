@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:26:45 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 07:13:19 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 07:18:20 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,22 +47,13 @@ int					ft_usleep(t_thread *mem, int time)
 		flag = 0;
 		mem->time = mem->time - 1000 * 1000;
 	}
-	//printf("%d before : %ld\n", mem->num, mem->time/1000);
 	while (!gettimeofday(&temp, NULL))
 	{
-		if (!flag)
-			printf("%d %ld, %ld\n", mem->num, temp.tv_usec, mem->time + 1000 * 1000);
-		if (!flag && temp.tv_sec < mem->time + 1000 * 1000)
-		{
-			printf("change!");
-			//printf("%d %ld, %ld\n", mem->num, temp.tv_usec, mem->time + time * 1000);
+		if (!flag && temp.tv_usec < mem->time + 1000 * 1000)
 			flag = 1;
-		}
 		if (flag && temp.tv_usec > mem->time + time * 1000)
 		{
 			mem->time = time * 1000 + mem->time;
-			// mem->time = temp.tv_usec;
-			printf("finish! %d\n", mem->num);
 			return (1);
 		}
 		usleep(100);
