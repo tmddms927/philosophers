@@ -6,13 +6,13 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:26:45 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 07:18:20 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 07:23:15 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
 
-int			exit_program(char *s)
+int					exit_program(char *s)
 {
 	printf("%s", s);
 	if (g_info)
@@ -30,7 +30,7 @@ int			exit_program(char *s)
 	return (0);
 }
 
-int			just_info_free(void)
+int					just_info_free(void)
 {
 	free(g_info);
 	return (0);

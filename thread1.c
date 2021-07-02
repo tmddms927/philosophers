@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:29:02 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 05:32:26 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 07:22:49 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,8 @@ void				*philo_action1(void *member)
 	printf("%ldms %d has taken a fork\n", mem->time / 1000, mem->num);
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
-		if (mem->action == THINK && temp.tv_usec - mem->time > g_info->die * 1000)
+		if (mem->action == THINK &&
+			temp.tv_usec - mem->time > g_info->die * 1000)
 		{
 			mem->time = temp.tv_usec;
 			return (change_action1(mem, DIE));

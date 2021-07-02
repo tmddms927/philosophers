@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 06:05:11 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 07:22:12 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,7 +85,6 @@ void				*change_action1();
 void				*change_action2(t_thread *mem, int action);
 void				get_chopstic1(t_thread *mem);
 void				get_chopstic2(t_thread *mem);
-
 
 void				ft_eat(t_thread *mem);
 void				*ft_sleep(t_thread *mem);
