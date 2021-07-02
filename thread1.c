@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:29:02 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 07:22:49 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 08:58:59 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,12 @@ int					thread_info_set(int i)
 		g_info->members[i].r_mu = &g_info->mutex[0];
 	else
 		g_info->members[i].r_mu = &g_info->mutex[i + 1];
-	if (pthread_create(&g_info->thread[i], NULL, philo_action1,
+	if (i == g_info->number - 1)
+	{	if (pthread_create(&g_info->thread[i], NULL, philo_action2,
+			(void *)&g_info->members[i]))
+			return (0);
+	}
+	else if (pthread_create(&g_info->thread[i], NULL, philo_action1,
 		(void *)&g_info->members[i]))
 		return (0);
 	return (1);
@@ -73,12 +78,50 @@ void				*philo_action1(void *member)
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
 		if (mem->action == THINK &&
-			temp.tv_usec - mem->time > g_info->die * 1000)
+			((mem->time / 1000 + g_info->die < 1000 &&
+			temp.tv_usec - mem->time > g_info->die * 1000) || 
+			(mem->time / 1000 + g_info->die >= 1000 &&
+			temp.tv_usec > g_info->die * 1000 + mem->time - 1000 * 1000 &&
+			temp.tv_usec < mem->time)))
 		{
 			mem->time = temp.tv_usec;
 			return (change_action1(mem, DIE));
 		}
+		if (mem->my_eat == g_info->must_eat)
+			return (member);
 		get_chopstic1(mem);
+	}
+	return (member);
+}
+
+/*
+** thread action2
+*/
+
+void				*philo_action2(void *member)
+{
+	t_thread		*mem;
+	struct timeval	temp;
+
+	mem = member;
+	gettimeofday(&temp, NULL);
+	mem->time = temp.tv_usec;
+	printf("%ldms %d has taken a fork\n", mem->time / 1000, mem->num);
+	while (mem->action != DIE && !gettimeofday(&temp, NULL))
+	{
+		if (mem->action == THINK &&
+			((mem->time / 1000 + g_info->die < 1000 &&
+			temp.tv_usec - mem->time > g_info->die * 1000) || 
+			(mem->time / 1000 + g_info->die >= 1000 &&
+			temp.tv_usec > g_info->die * 1000 + mem->time - 1000 * 1000 &&
+			temp.tv_usec < mem->time)))
+		{
+			mem->time = temp.tv_usec;
+			return (change_action1(mem, DIE));
+		}
+		if (mem->my_eat == g_info->must_eat)
+			return (member);
+		get_chopstic2(mem);
 	}
 	return (member);
 }

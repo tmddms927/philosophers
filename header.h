@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 07:22:12 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 07:24:29 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ int					ft_usleep(t_thread *mem, int time);
 int					start_thread();
 int					thread_info_set(int i);
 void				*philo_action1(void *info);
+void				*philo_action2(void *member);
 void				*change_action1();
 void				*change_action2(t_thread *mem, int action);
 void				get_chopstic1(t_thread *mem);

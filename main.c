@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:23:20 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 06:44:36 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 08:35:21 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,10 @@ int		main(int argc, char **argv)
 				eat++;
 		}
 		if (eat == g_info->number)
+		{
+				printf("die!");
 			return (0);
+		}
 	}
 	return (0);
 }

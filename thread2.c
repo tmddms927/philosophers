@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 06:02:30 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 08:29:03 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,23 @@
 void				*change_action1(t_thread *mem, int action)
 {
 	struct timeval	temp;
+	int				i;
 
+	i = g_info->number;
 	if (action == DIE)
 	{
 		printf("%ldms %d is died\n", mem->time / 1000, mem->num);
+		while (i < g_info->number * 2)
+			pthread_mutex_lock(&g_info->mutex[i++]);
 		mem->action = DIE;
-	}
+	}	
 	if (action == EAT)
 	{
 		gettimeofday(&temp, NULL);
 		mem->time = temp.tv_usec;
+		pthread_mutex_lock(&g_info->mutex[g_info->number + mem->num - 1]);
 		printf("%ldms %d is eating\n", mem->time / 1000, mem->num);
-		mem->my_eat++;
+		pthread_mutex_unlock(&g_info->mutex[g_info->number + mem->num - 1]);
 		mem->action = EATTING;
 		ft_eat(mem);
 	}
