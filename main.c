@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:23:20 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 00:11:15 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 06:35:56 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,15 @@ int		main(int argc, char **argv)
 {
 	int	i;
 	int eat;
+	struct timeval	temp;
 
 	if (!start_parsing(argc, argv))
 		return (0);
-	while (1)
+	while (!gettimeofday(&temp, NULL))
 	{
 		i = -1;
 		eat = 0;
+		printf("%ld\n", temp.tv_usec / 1000);
 		while (++i < g_info->number)
 		{
 			if (g_info->members[i].action == DIE)

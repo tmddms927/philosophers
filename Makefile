@@ -6,7 +6,7 @@
 #    By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 23:27:06 by seungoh           #+#    #+#              #
-#    Updated: 2021/07/01 23:09:00 by seungoh          ###   ########.fr        #
+#    Updated: 2021/07/02 05:17:56 by seungoh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ SRCS		=		main.c\
 					utils.c\
 					parsing.c\
 					thread1.c\
-					thread2.c
+					thread2.c\
+					philo_action.c
 OBJS		=		${SRCS:.c=.o}
 
 all			:		${OUT}

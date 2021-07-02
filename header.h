@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/01 20:06:51 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/02 06:05:11 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,15 +20,17 @@
 # include <sys/time.h>
 # include <unistd.h>
 
-# define NOT 1
+# define THINK 1
 # define EAT 2
-# define SLEEP 3
-# define DIE 4
+# define EATTING 3
+# define SLEEP 4
+# define SLEEPING 5
+# define DIE 6
 
 typedef struct		s_thread
 {
 	int				num;
-	suseconds_t		not;
+	suseconds_t		time;
 	int				my_eat;
 	int				action;
 	bool			my_l;
@@ -70,6 +72,7 @@ int					ft_atoi(const char *str);
 
 int					exit_program(char *s);
 int					just_info_free();
+int					ft_usleep(t_thread *mem, int time);
 
 /*
 ** thread.c
@@ -80,6 +83,11 @@ int					thread_info_set(int i);
 void				*philo_action1(void *info);
 void				*change_action1();
 void				*change_action2(t_thread *mem, int action);
-void				get_chopstic(t_thread *mem);
+void				get_chopstic1(t_thread *mem);
+void				get_chopstic2(t_thread *mem);
+
+
+void				ft_eat(t_thread *mem);
+void				*ft_sleep(t_thread *mem);
 
 #endif
