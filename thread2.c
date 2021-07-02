@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/01 20:08:02 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/01 23:09:37 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ void				*change_action1(t_thread *mem, int action)
 	if (action == DIE)
 	{
 		gettimeofday(&temp, NULL);
-		printf("%dms %d is died\n", temp.tv_usec / 1000, mem->num);
+		printf("%ldms %d is died\n", temp.tv_usec / 1000, mem->num);
 		mem->action = DIE;
 	}
 	if (action == EAT)
 	{
 		gettimeofday(&temp, NULL);
-		printf("%dms %d is eating\n", temp.tv_usec / 1000, mem->num);
+		printf("%ldms %d is eating\n", temp.tv_usec / 1000, mem->num);
 		mem->my_eat++;
 		pthread_mutex_lock(mem->l_mu);
 		mem->my_l = false;
@@ -57,13 +57,13 @@ void				*change_action2(t_thread *mem, int action)
 	{
 		mem->action = SLEEP;
 		gettimeofday(&temp, NULL);
-		printf("%dms %d is sleeping\n", temp.tv_usec / 1000, mem->num);
+		printf("%ldms %d is sleeping\n", temp.tv_usec / 1000, mem->num);
 	}
 	if (action == NOT)
 	{
 		mem->action = NOT;
 		gettimeofday(&temp, NULL);
-		printf("%dms %d is thinking\n", temp.tv_usec / 1000, mem->num);
+		printf("%ldms %d is thinking\n", temp.tv_usec / 1000, mem->num);
 	}
 	return (0);
 }

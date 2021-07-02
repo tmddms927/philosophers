@@ -6,7 +6,7 @@
 #    By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 23:27:06 by seungoh           #+#    #+#              #
-#    Updated: 2021/06/30 02:56:03 by seungoh          ###   ########.fr        #
+#    Updated: 2021/07/01 23:09:00 by seungoh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,8 @@ CFLAGS		=		-Wall -Werror -Wextra -pthread -fsanitize=address -g
 SRCS		=		main.c\
 					utils.c\
 					parsing.c\
-					thread.c
+					thread1.c\
+					thread2.c
 OBJS		=		${SRCS:.c=.o}
 
 all			:		${OUT}
