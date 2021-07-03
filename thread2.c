@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 14:22:47 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 16:46:20 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,23 +18,20 @@
 
 void				*change_action1(t_thread *mem, int action)
 {
-	struct timeval	temp;
 	int				i;
 
 	i = g_info->number;
 	if (action == DIE)
 	{
 		pthread_mutex_lock(&g_info->mutex[g_info->number]);
-		printf("%ldms %d is died\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
+		printf("%ldms %d is died\n", (mem->time.tv_sec - g_info->st.tv_sec) *
+		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		mem->action = DIE;
 	}
 	if (action == EAT)
 	{
-		gettimeofday(&temp, NULL);
-		mem->time = temp;
-		pthread_mutex_lock(&g_info->mutex[g_info->number]);
-		printf("%ldms %d is eating\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
-		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
+		printf("%ldms %d is eating\n", (mem->time.tv_sec - g_info->st.tv_sec) *
+		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		mem->action = EATTING;
 		ft_eat(mem);
 	}
@@ -51,17 +48,15 @@ void				*change_action2(t_thread *mem, int action)
 	if (action == SLEEP)
 	{
 		mem->action = SLEEPING;
-		pthread_mutex_lock(&g_info->mutex[g_info->number]);
-		printf("%ldms %d is sleeping\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec  - g_info->start.tv_usec) / 1000 + g_info->eat, mem->num);
-		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
+		printf("%ldms %d is sleeping\n", (mem->pt.tv_sec - g_info->st.tv_sec) *
+		1000 + (mem->pt.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		ft_sleep(mem);
 	}
 	if (action == THINK)
 	{
 		mem->action = THINK;
-		pthread_mutex_lock(&g_info->mutex[g_info->number]);
-		printf("%ldms %d is thinking\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec  - g_info->start.tv_usec) / 1000 + g_info->eat + g_info->sleep, mem->num);
-		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
+		printf("%ldms %d is thinking\n", (mem->pt.tv_sec - g_info->st.tv_sec) *
+		1000 + (mem->pt.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 	}
 	return (0);
 }
@@ -72,6 +67,8 @@ void				*change_action2(t_thread *mem, int action)
 
 void				get_chopstic1(t_thread *mem)
 {
+	struct timeval	temp;
+
 	if (*mem->l_chop)
 	{
 		pthread_mutex_lock(mem->l_mu);
@@ -87,7 +84,14 @@ void				get_chopstic1(t_thread *mem)
 		pthread_mutex_unlock(mem->r_mu);
 	}
 	if (mem->my_l && mem->my_r && mem->action == THINK)
+	{
+		gettimeofday(&temp, NULL);
+		mem->time = temp;
+		printf("%ldms %d has taken a fork\n",
+		(mem->time.tv_sec - g_info->st.tv_sec) * 1000 +
+		(mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		change_action1(mem, EAT);
+	}
 }
 
 /*
@@ -96,6 +100,8 @@ void				get_chopstic1(t_thread *mem)
 
 void				get_chopstic2(t_thread *mem)
 {
+	struct timeval	temp;
+
 	if (*mem->r_chop)
 	{
 		pthread_mutex_lock(mem->r_mu);
@@ -110,6 +116,13 @@ void				get_chopstic2(t_thread *mem)
 		*mem->l_chop = false;
 		pthread_mutex_unlock(mem->l_mu);
 	}
-	if (mem->my_l && mem->my_r)
+	if (mem->my_l && mem->my_r && mem->action == THINK)
+	{
+		gettimeofday(&temp, NULL);
+		mem->time = temp;
+		printf("%ldms %d has taken a fork\n",
+		(mem->time.tv_sec - g_info->st.tv_sec) *
+		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		change_action1(mem, EAT);
+	}
 }

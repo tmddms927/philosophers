@@ -6,13 +6,13 @@
 #    By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/06/27 23:27:06 by seungoh           #+#    #+#              #
-#    Updated: 2021/07/02 05:17:56 by seungoh          ###   ########.fr        #
+#    Updated: 2021/07/03 16:50:32 by seungoh          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 OUT			=		philo
 CC			= 		gcc
-CFLAGS		=		-Wall -Werror -Wextra -pthread -fsanitize=address -g
+CFLAGS		=		-Wall -Werror -Wextra -pthread
 SRCS		=		main.c\
 					utils.c\
 					parsing.c\

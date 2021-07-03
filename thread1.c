@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:29:02 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 14:22:57 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 16:43:23 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,13 @@ int					start_thread(void)
 
 	i = 0;
 	gettimeofday(&temp, NULL);
-	g_info->start = temp;
+	g_info->st = temp;
 	while (i < g_info->number)
 	{
 		if (!thread_info_set(i))
 			return (0);
 		i++;
+		usleep(100);
 	}
 	return (1);
 }
@@ -55,7 +56,8 @@ int					thread_info_set(int i)
 	else
 		g_info->members[i].r_mu = &g_info->mutex[i + 1];
 	if (g_info->number == i - 1)
-	{	if (pthread_create(&g_info->thread[i], NULL, philo_action2,
+	{
+		if (pthread_create(&g_info->thread[i], NULL, philo_action2,
 			(void *)&g_info->members[i]))
 			return (0);
 	}
@@ -77,12 +79,10 @@ void				*philo_action1(void *member)
 	mem = member;
 	gettimeofday(&temp, NULL);
 	mem->time = temp;
-	pthread_mutex_lock(&g_info->mutex[g_info->number]);
-	printf("%ldms %d has taken a fork\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
-	pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
-		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 + temp.tv_usec  - mem->time.tv_usec) > g_info->die * 1000)
+		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 +
+			temp.tv_usec - mem->time.tv_usec) > g_info->die * 1000)
 		{
 			mem->time = temp;
 			return (change_action1(mem, DIE));
@@ -107,12 +107,10 @@ void				*philo_action2(void *member)
 	mem = member;
 	gettimeofday(&temp, NULL);
 	mem->time = temp;
-	pthread_mutex_lock(&g_info->mutex[g_info->number]);
-	printf("%ldms %d has taken a fork\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
-	pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
-		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 + temp.tv_usec  - mem->time.tv_usec) > g_info->die * 1000)
+		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 +
+			temp.tv_usec - mem->time.tv_usec) > g_info->die * 1000)
 		{
 			mem->time = temp;
 			return (change_action1(mem, DIE));
