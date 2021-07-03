@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 07:24:29 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 11:52:03 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@
 typedef struct		s_thread
 {
 	int				num;
-	suseconds_t		time;
+
+	struct timeval	time;
 	int				my_eat;
 	int				action;
 	bool			my_l;
@@ -49,6 +50,7 @@ typedef struct		s_info
 	int				sleep;
 	int				must_eat;
 	bool			*chopstic;
+	struct timeval	start;
 	pthread_t		*thread;
 	pthread_mutex_t	*mutex;
 	t_thread		*members;

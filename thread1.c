@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 06:29:02 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/02 08:58:59 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 11:58:49 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,23 +73,21 @@ void				*philo_action1(void *member)
 
 	mem = member;
 	gettimeofday(&temp, NULL);
-	mem->time = temp.tv_usec;
-	printf("%ldms %d has taken a fork\n", mem->time / 1000, mem->num);
+	mem->time = temp;
+	if (mem->num == 1)
+		g_info->start = temp;
+	printf("%ldms %d has taken a fork\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
-		if (mem->action == THINK &&
-			((mem->time / 1000 + g_info->die < 1000 &&
-			temp.tv_usec - mem->time > g_info->die * 1000) || 
-			(mem->time / 1000 + g_info->die >= 1000 &&
-			temp.tv_usec > g_info->die * 1000 + mem->time - 1000 * 1000 &&
-			temp.tv_usec < mem->time)))
+		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 + temp.tv_usec  - mem->time.tv_usec) > g_info->die * 1000)
 		{
-			mem->time = temp.tv_usec;
+			mem->time = temp;
 			return (change_action1(mem, DIE));
 		}
 		if (mem->my_eat == g_info->must_eat)
 			return (member);
-		get_chopstic1(mem);
+		if (mem->action == THINK)
+			get_chopstic1(mem);
 	}
 	return (member);
 }
@@ -105,23 +103,21 @@ void				*philo_action2(void *member)
 
 	mem = member;
 	gettimeofday(&temp, NULL);
-	mem->time = temp.tv_usec;
-	printf("%ldms %d has taken a fork\n", mem->time / 1000, mem->num);
+	mem->time = temp;
+	if (mem->num == 1)
+		g_info->start = temp;
+	printf("%ldms %d has taken a fork\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
 	while (mem->action != DIE && !gettimeofday(&temp, NULL))
 	{
-		if (mem->action == THINK &&
-			((mem->time / 1000 + g_info->die < 1000 &&
-			temp.tv_usec - mem->time > g_info->die * 1000) || 
-			(mem->time / 1000 + g_info->die >= 1000 &&
-			temp.tv_usec > g_info->die * 1000 + mem->time - 1000 * 1000 &&
-			temp.tv_usec < mem->time)))
+		if (((temp.tv_sec - mem->time.tv_sec) * 1000000 + temp.tv_usec  - mem->time.tv_usec) > g_info->die * 1000)
 		{
-			mem->time = temp.tv_usec;
+			mem->time = temp;
 			return (change_action1(mem, DIE));
 		}
 		if (mem->my_eat == g_info->must_eat)
 			return (member);
-		get_chopstic2(mem);
+		if (mem->action == THINK)
+			get_chopstic2(mem);
 	}
 	return (member);
 }
