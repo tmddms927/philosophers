@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/02 04:56:03 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 11:20:11 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 14:25:10 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void				ft_eat(t_thread *mem)
 		pthread_mutex_lock(mem->r_mu);
 		*mem->r_chop = true;
 		mem->my_r = false;
-		mem->my_eat++;
 		pthread_mutex_unlock(mem->r_mu);
+		mem->my_eat++;
 		change_action1(mem, SLEEP);
 	}
 }

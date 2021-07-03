@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/27 23:26:45 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 11:49:55 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 13:17:20 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int					ft_usleep(t_thread *mem, int time)
 
 	while (!gettimeofday(&temp, NULL))
 	{
-		if (temp.tv_sec * 1000 * temp.tv_usec / 1000 > mem->time.tv_sec * 1000 + mem->time.tv_usec / 1000 + time * 1000)
+		if (temp.tv_sec * 1000 + temp.tv_usec / 1000 > mem->time.tv_sec * 1000 + mem->time.tv_usec / 1000 + time)
 			return (1);
 		usleep(100);
 	}

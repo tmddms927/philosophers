@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 11:55:03 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 14:22:47 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,7 @@ void				*change_action1(t_thread *mem, int action)
 	i = g_info->number;
 	if (action == DIE)
 	{
-		while (i < g_info->number * 2)
-			pthread_mutex_lock(&g_info->mutex[i++]);
+		pthread_mutex_lock(&g_info->mutex[g_info->number]);
 		printf("%ldms %d is died\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
 		mem->action = DIE;
 	}
@@ -33,9 +32,9 @@ void				*change_action1(t_thread *mem, int action)
 	{
 		gettimeofday(&temp, NULL);
 		mem->time = temp;
-		pthread_mutex_lock(&g_info->mutex[g_info->number + mem->num - 1]);
+		pthread_mutex_lock(&g_info->mutex[g_info->number]);
 		printf("%ldms %d is eating\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec - g_info->start.tv_usec) / 1000, mem->num);
-		pthread_mutex_unlock(&g_info->mutex[g_info->number + mem->num - 1]);
+		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 		mem->action = EATTING;
 		ft_eat(mem);
 	}
@@ -52,13 +51,17 @@ void				*change_action2(t_thread *mem, int action)
 	if (action == SLEEP)
 	{
 		mem->action = SLEEPING;
+		pthread_mutex_lock(&g_info->mutex[g_info->number]);
 		printf("%ldms %d is sleeping\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec  - g_info->start.tv_usec) / 1000 + g_info->eat, mem->num);
+		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 		ft_sleep(mem);
 	}
 	if (action == THINK)
 	{
 		mem->action = THINK;
+		pthread_mutex_lock(&g_info->mutex[g_info->number]);
 		printf("%ldms %d is thinking\n", ((mem->time.tv_sec - g_info->start.tv_sec) * 1000000 + mem->time.tv_usec  - g_info->start.tv_usec) / 1000 + g_info->eat + g_info->sleep, mem->num);
+		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 	}
 	return (0);
 }
