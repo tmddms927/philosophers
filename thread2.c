@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 16:46:20 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 17:56:13 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,10 @@ void				*change_action1(t_thread *mem, int action)
 	}
 	if (action == EAT)
 	{
+		pthread_mutex_lock(&g_info->mutex[g_info->number]);
 		printf("%ldms %d is eating\n", (mem->time.tv_sec - g_info->st.tv_sec) *
 		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
+		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
 		mem->action = EATTING;
 		ft_eat(mem);
 	}
