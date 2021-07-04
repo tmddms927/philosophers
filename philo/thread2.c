@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/07/01 20:07:31 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 17:56:13 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/04 00:57:20 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,20 +20,21 @@ void				*change_action1(t_thread *mem, int action)
 {
 	int				i;
 
-	i = g_info->number;
+	i = g_info->number - 1;
 	if (action == DIE)
 	{
-		pthread_mutex_lock(&g_info->mutex[g_info->number]);
+		while (++i < g_info->number * 2)
+			pthread_mutex_lock(&g_info->mutex[i]);
 		printf("%ldms %d is died\n", (mem->time.tv_sec - g_info->st.tv_sec) *
 		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
 		mem->action = DIE;
 	}
 	if (action == EAT)
 	{
-		pthread_mutex_lock(&g_info->mutex[g_info->number]);
+		//pthread_mutex_lock(&g_info->mutex[g_info->number + mem->num - 1]);
 		printf("%ldms %d is eating\n", (mem->time.tv_sec - g_info->st.tv_sec) *
 		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
-		pthread_mutex_unlock(&g_info->mutex[g_info->number]);
+		//pthread_mutex_unlock(&g_info->mutex[g_info->number + mem->num - 1]);
 		mem->action = EATTING;
 		ft_eat(mem);
 	}
@@ -89,10 +90,10 @@ void				get_chopstic1(t_thread *mem)
 	{
 		gettimeofday(&temp, NULL);
 		mem->time = temp;
+		change_action1(mem, EAT);
 		printf("%ldms %d has taken a fork\n",
 		(mem->time.tv_sec - g_info->st.tv_sec) * 1000 +
 		(mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
-		change_action1(mem, EAT);
 	}
 }
 
@@ -122,9 +123,9 @@ void				get_chopstic2(t_thread *mem)
 	{
 		gettimeofday(&temp, NULL);
 		mem->time = temp;
+		change_action1(mem, EAT);
 		printf("%ldms %d has taken a fork\n",
 		(mem->time.tv_sec - g_info->st.tv_sec) *
 		1000 + (mem->time.tv_usec - g_info->st.tv_usec) / 1000, mem->num);
-		change_action1(mem, EAT);
 	}
 }
