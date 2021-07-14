@@ -6,7 +6,7 @@
 /*   By: seungoh <seungoh@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/06/28 05:56:01 by seungoh           #+#    #+#             */
-/*   Updated: 2021/07/03 17:55:24 by seungoh          ###   ########.fr       */
+/*   Updated: 2021/07/03 16:43:43 by seungoh          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ int					ft_atoi(const char *str);
 */
 
 int					exit_program(char *s);
+int					just_info_free();
 int					ft_usleep(t_thread *mem, int time);
 
 /*
